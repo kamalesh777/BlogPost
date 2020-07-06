@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add category</title>
+    <%- include('style.ejs') %>
+</head>
+
+<body>
+    <div class="main container-fluid admin-login">
+        <div class="row">
+            <div class="col-md-3">
+                <%- include("sidebar.ejs") %>
+            </div>
+            <div class="col-md-9">
+                <div class="bodyView">
+                    <div class="row">
+                        <div class="col-md-7 mx-auto">
+                            <form action="/add-category" method="post" class="form commonForm my-0" autocomplete="off">
+                                
+                                <input type="hidden" name="hiddencategory" value="" id="hidcat">
+                                <h3 class="header">Add Category</h3>
+                                <% if (errMsg != '') { %>
+                                    <div class="alert alert-danger">
+                                        <%= errMsg %>
+                                    </div>
+                                <%  } %>
+                                <% if (success != '') { %>
+                                    <div class="alert alert-success">
+                                        <%= success %>
+                                    </div>
+                                <%  } %>
+                                <div class="form-group posDepth-5">
+                                    <label for="category" class="d-block mb-2 text-info">Enter Category</label>
+                                    <input type="text" name="categoryName" class="form-control" id="category" placeholder="eg. post categoty">
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-gradient" id="categorySubmit">Create Now!</button>
+                                <%- include('formsvg.ejs') %>
+                            </form>
+                            <% if (categoryList.length != 0) { %> 
+                                <div class="card my-4">
+                                    <ul class="categoryList">
+                                        <% categoryList.forEach(function(cat){%>
+                                            <li><%= cat.category %></li>
+                                        <%})%>
+                                    </ul>
+                                </div>
+                            <% }%>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<%- include('script.ejs') %>
+<script>
+    // Add the following code if you want the name of the file appear on select
+    $(".custom-file-input").on("change", function () {
+        var fileName = $(this).val().split("\\").pop();
+        $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+    });
+</script>
+
+</html>

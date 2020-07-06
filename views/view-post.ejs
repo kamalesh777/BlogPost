@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View-Post</title>
+    <%- include('style.ejs') %>
+</head>
+
+<body>
+    <div class="main container-fluid">
+        <div class="row">
+            <div class="col-md-3">
+                <%- include("sidebar.ejs") %>
+            </div>
+            <div class="col-md-9">
+                <div class="bodyView">
+                    <h2 class="mb-4">Your Post</h2>
+                    <div class="table-responsive-md viewTable">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th scope="col">
+                                        <form action="/" class="mr-1">
+                                            <input type="checkbox" name="selectAll" id="checkedAll">
+                                        </form>
+                                    </th>
+                                    <th scope="col">Title</th>
+                                    <th scope="col">Publish</th>
+                                    <th scope="col">Date</th>
+                                    <th scope="col">Comments</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% if (postData) { %>
+                                    <% postData.forEach(function(data) { %>
+                                        <tr>
+                                            <th scope="row">
+                                                <form action="/" class="mr-1">
+                                                    <input type="checkbox" name="selectOne" class="checkedMe">
+                                                </form>
+                                            </th>
+                                            <td><%= data.title %></td>
+                                            <td><%= data.publish %></td>
+                                            <td><%= data.date %></td>
+                                            <td><strong><%= data.comments.length %></strong></td>
+                                            <td>
+                                                <a href="/view-post/edit-post/<%= data.imageUrl %>/<%= data._id %>" class="btn btn-primary btn-action" title="Edit Post"><i
+                                                        class="fa fa-edit"></i></a>
+                                                <a href="/view-post/delete-post/<%=data._id%>" class="btn btn-danger btn-action" title="Delete Post" onclick="return confirm('Confirm to delete')"><i
+                                                        class="fa fa-trash"></i></a>
+                                                <a href="/" class="btn btn-success btn-action" title="View Post"><i
+                                                        class="fa fa-share"></i></a>
+                                            </td>
+                                        </tr>
+                                    <% }) %>
+                                <% } %>
+                                <% if (postData == '') { %>
+                                    <tr>
+                                        <td colspan="6"><p class="text-center"><strong>Yet you didn't posted anyting <a href="/new-post/<%=userDetails._id%>">Create Post</a></strong></p></td>
+                                    </tr>
+                                <% } %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<%- include('script.ejs') %>
+</html>

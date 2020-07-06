@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New-Post</title>
+    <%- include('style.ejs') %>
+</head>
+
+<body>
+    <div class="main container-fluid admin-login">
+        <div class="row">
+            <div class="col-md-3">
+                <%- include("sidebar.ejs") %>
+            </div>
+            <div class="col-md-9">
+                <div class="bodyView">
+                    <div class="row">
+                        <div class="col-md-7 mx-auto">
+                            <form action="/new-post/<%= userDetails._id %>" method="post" enctype="multipart/form-data" autocomplete="off"
+                                class="form commonForm my-0">
+
+                                <input type="hidden" name="hiddencategory" value="" id="hidcat">
+                                <h3 class="header">New Post</h3>
+                                <% if (errMsg != '') { %>
+                                    <div class="alert alert-danger">
+                                        <%= errMsg %>
+                                    </div>
+                                <%  } %>
+                                <% if (success != '') { %>
+                                    <div class="alert alert-success">
+                                        <%= success %>
+                                    </div>
+                                <%  } %>
+                                <div class="form-group posDepth-5">
+                                    <label for="headingTitle" class="d-block mb-2 text-info">Heading Title</label>
+                                    <input type="text" name="headingTitle" class="form-control" id="headingTitle"
+                                        placeholder="eg. post title">
+                                </div>
+                                <div class=" form-group">
+                                    <label for="uploadFile" class="d-block mb-2 text-info">Choose File</label>
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="customFile" name="uploadFile"
+                                            placeholder="">
+                                        <label class="custom-file-label" for="customFile">eg. image format jpg,
+                                            jpeg</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleFormControlSelect2" class="d-block mb-2 text-info">Select Category</label>
+                                    <% if (categoryList.length != 0 ){ %>
+                                        <select name="category" class="chosen-select" multiple data-placeholder="select some category">
+                                           
+                                                <% categoryList.forEach(function(cat){ %>
+                                                    <option value="<%= cat.category %>"><%= cat.category %></option>
+                                                <% }) %>
+                                        </select>
+                                    <% } else { %> 
+                                        <div class="form-control formAppend">
+                                            <span class="labelAttr">Didn't find any category <a href="/add-category" class="createCategory">Create Now</a></span>
+                                        </div>
+                                    <%}%>
+                                    
+                                </div>
+                                <% if (categoryList.length != 0 ){ %>
+                                    <div class="form-group mt-n2">
+                                        <div class="text-right formAppend">
+                                            <span class="text-white small">Create more category from here <a href="/add-category" class="createCategory">Create Now</a></span>
+                                        </div>
+                                    </div>
+                                <% } %>
+                                <div class="form-group">
+                                    <label for="postContent" class="d-block mb-2 text-info">Post Content</label>
+                                    <textarea name="postContent" id="postContent" class="form-control" rows="5"
+                                        placeholder="eg. write about the post"></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-gradient" id="createPost">Post
+                                    it!</button>
+                                <%- include('formsvg.ejs') %>
+                            </form>
+                            <form action="/another-category" method="post" id="catForm">
+                                <div class="form-box">
+                                    <div class="d-flex ">
+                                        <input type="text" name="categoryName" class="form-control" id="category" placeholder="eg. post categoty">
+                                        <button type="button" class="btn btn-primary btn-gradient" id="categorySubmit">Create</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<%- include('script.ejs') %>
+<script>
+    // Add the following code if you want the name of the file appear on select
+    $(".custom-file-input").on("change", function () {
+        var fileName = $(this).val().split("\\").pop();
+        $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+    });
+    $(document).ready(function () {
+        $(".chosen-select").chosen({
+            disable_search_threshold: 10,
+            no_results_text: "Oops, nothing found!",
+            width: "100%",
+        });
+        var allCategory = [];
+        //$('.createCategory').click(function(){
+          //  $(this).parents(".formAppend").append($('#catForm'));
+        //    $('.form-box').show(450);
+       // })
+        $('.chosen-select').on('change', function(evt, params) {
+            if(params.selected){
+                allCategory.push(params.selected);
+            } else {
+                let deselectItem = params.deselected;
+                allCategory.splice( $.inArray(deselectItem, allCategory), 1 );
+                //allCategory.pop(params.deselected);
+            }
+            $("#hidcat").val(allCategory);
+        });
+    });
+</script>
+
+</html>

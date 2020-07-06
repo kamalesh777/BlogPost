@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <%- include('style.ejs') %>
+</head>
+
+<body>
+  <%- include("header.ejs") %>
+    <div class="container my-5">
+        <div class="row">
+            <div class="col-12">
+                <div class="box">
+                    <figure class="full-width">
+                        <img src="/upload/<%= data.imageUrl %>" alt="">
+                    </figure>
+                    <p class="categoryRow"> <strong>Categories : </strong>
+                        <% data.categories.forEach(function(item){ %>
+                        <span><%= item %> </span>
+                        <% }) %>
+                    </p>
+                    <h3><%= lodash.upperFirst(data.titile) %></h3>
+                    <p><%= data.content %> </p>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <%- include("footer.ejs") %>
+</body>
+<%- include("script.ejs") %>
+</html>
